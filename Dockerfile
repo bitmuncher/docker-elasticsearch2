@@ -41,6 +41,3 @@ RUN ln -s /data/elasticsearch/logs /var/log/elasticsearch
 RUN usermod -s /bin/bash elasticsearch
 
 ENTRYPOINT ["/run_es.sh"]
-
-CMD sh -c '/run_es.sh'
-
