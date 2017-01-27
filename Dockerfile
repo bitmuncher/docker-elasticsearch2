@@ -40,4 +40,9 @@ RUN usermod -s /bin/bash elasticsearch
 COPY run_es.sh /run_es.sh
 RUN chmod a+rx /run_es.sh
 
+VOLUME /data/elasticsearch/data
+VOLUME /data/elasticsearch/logs
+EXPOSE 9200
+EXPOSE 9300
+
 ENTRYPOINT ["/run_es.sh"]
