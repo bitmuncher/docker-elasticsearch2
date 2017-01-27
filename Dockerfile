@@ -24,10 +24,12 @@ RUN cd /usr/src && yum -y localinstall jdk-8u121-linux-x64.rpm
 
 # prepare package installation
 RUN rpm --import http://packages.elastic.co/GPG-KEY-elasticsearch
-
 COPY conf/yum/elasticsearch.repo /etc/yum.repos.d/elasticsearch.repo
 
 RUN yum -y install elasticsearch
+
+COPY run_es.sh /run_es.sh
+RUN chmod a+rx /run_es.sh
 
 RUN chown -R elasticsearch:elasticsearch /data/elasticsearch
 COPY conf/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
@@ -38,4 +40,7 @@ RUN ln -s /data/elasticsearch/logs /var/log/elasticsearch
 
 RUN usermod -s /bin/bash elasticsearch
 
-CMD sh -c 'su elasticsearch -c "/usr/share/elasticsearch/bin/elasticsearch -p /var/run/elasticsearch/elasticsearch.pid -Ddefault.path.logs=/var/log/elasticsearch -Ddefault.path.data=/var/lib/elasticsearch -Ddefault.path.conf=/etc/elasticsearch"'
+ENTRYPOINT ["/run_es.sh"]
+
+CMD sh -c '/run_es.sh'
+
