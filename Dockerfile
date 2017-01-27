@@ -28,9 +28,6 @@ COPY conf/yum/elasticsearch.repo /etc/yum.repos.d/elasticsearch.repo
 
 RUN yum -y install elasticsearch
 
-COPY run_es.sh /run_es.sh
-RUN chmod a+rx /run_es.sh
-
 RUN chown -R elasticsearch:elasticsearch /data/elasticsearch
 COPY conf/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
 RUN rm -rf /var/lib/elasticsearch
@@ -39,5 +36,8 @@ RUN rm -rf /var/log/elasticsearch
 RUN ln -s /data/elasticsearch/logs /var/log/elasticsearch
 
 RUN usermod -s /bin/bash elasticsearch
+
+COPY run_es.sh /run_es.sh
+RUN chmod a+rx /run_es.sh
 
 ENTRYPOINT ["/run_es.sh"]
